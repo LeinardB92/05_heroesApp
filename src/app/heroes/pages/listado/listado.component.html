@@ -5,8 +5,16 @@
 <br>
 
 
-<div fxLayout="row">
-        <mat-card *ngFor="let heroe of heroes">
+<div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="15px">
+    <div fxFlex="18"
+         fxFlex.xs="40"     
+         fxFlex.sm="30"
+         fxFlex.md="20"
+
+          
+        *ngFor="let heroe of heroes">
+        
+        <mat-card >
             <mat-card-header>
                 <mat-card-title>{{heroe.superhero}}</mat-card-title>
                 <mat-card-subtitle>{{heroe.alter_ego}}</mat-card-subtitle>
@@ -31,9 +39,9 @@
                     Editar
                 </button>
             </mat-card-actions>
-        </mat-card>    
+        </mat-card>  
     </div>
-    
+          
 </div>
 
 
