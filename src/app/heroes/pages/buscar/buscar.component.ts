@@ -11,20 +11,28 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class BuscarComponent {
   termino:string = '';
   heroes: Heroe[] = [];
-  heroeSeleccionado!: Heroe;
+  heroeSeleccionado: Heroe | undefined;
 
   constructor(private heroesService: HeroesService){}
 
   buscando(){
-    this.heroesService.getSugerencias(this.termino)
+    this.heroesService.getSugerencias(this.termino.trim())
     .subscribe(heroes => this.heroes = heroes);
   }
 
   opcionSeleccionada(event: MatAutocompleteSelectedEvent){
-    const heroe: Heroe = event.option.value;
-    this.termino = heroe.superhero;
+    if (!event.option.value){
+      this.heroeSeleccionado = undefined
+      console.log("No hay resultados");
+    }
+    else{
+      const heroe: Heroe = event.option.value;
+      this.termino = heroe.superhero;
+  
+      this.heroesService.getHeroePorId(heroe.id!)
+      .subscribe(heroe => this.heroeSeleccionado = heroe)
 
-    this.heroesService.getHeroePorId(heroe.id!)
-    .subscribe(heroe => this.heroeSeleccionado = heroe)
+      console.log("Si hay resultados");
+    }
   }
 }
