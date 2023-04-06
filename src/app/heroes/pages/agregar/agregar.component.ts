@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Heroe } from '../../interfaces/heroes.interface';
 import { Publisher } from '../../interfaces/heroes.interface';
+import { HeroesService } from '../../services/heroes.service';
 
 @Component({
   selector: 'app-agregar',
@@ -18,6 +19,7 @@ export class AgregarComponent {
       desc: 'MARVEL - Comics'
     }
   ]
+
   heroe: Heroe = {
     id : '',
     superhero : '',
@@ -26,5 +28,16 @@ export class AgregarComponent {
     first_appearance : '',
     characters : '',
     alt_img : ''
+  }
+
+  constructor(private heroesService: HeroesService){}
+
+  guardar(){
+    if(this.heroe.superhero.trim().length === 0){
+      return;
+    }
+
+    this.heroesService.agregarHeroe(this.heroe)
+    .subscribe(resp => console.log(resp))
   }
 }
