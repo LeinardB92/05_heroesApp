@@ -8,7 +8,12 @@ import { switchMap } from 'rxjs';
 @Component({
   selector: 'app-agregar',
   templateUrl: './agregar.component.html',
-  styleUrls: []
+  styles: [`
+    img{
+      width: 100%;
+      border-radius: 10px;
+    }
+  `]
 })
 export class AgregarComponent implements OnInit {
   publishers = [
