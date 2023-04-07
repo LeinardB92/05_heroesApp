@@ -42,9 +42,13 @@ export class AgregarComponent implements OnInit {
               private router: Router){}
   
   ngOnInit(): void {
+    if(!this.router.url.includes('editar')){
+      return;
+    }
+
     this.activatedRoute.params
-    .pipe(switchMap(param => this.heroesService.getHeroePorId(param['id'])))
-    .subscribe(heroe => this.heroe = heroe)
+      .pipe(switchMap(param => this.heroesService.getHeroePorId(param['id'])))
+      .subscribe(heroe => this.heroe = heroe)
   }
 
   guardar(){
@@ -54,12 +58,20 @@ export class AgregarComponent implements OnInit {
 
     if(this.heroe.id){
       this.heroesService.actualizarHeroe(this.heroe)
-      .subscribe(heroe => console.log('Actualizando', heroe))
+        .subscribe(heroe => console.log('Actualizando', heroe))
     }else{
       this.heroesService.agregarHeroe(this.heroe)
-      .subscribe(heroe => {
-        this.router.navigate(['/heroes/editar', heroe.id]);
+        .subscribe(heroe => {
+          this.router.navigate(['/heroes/editar', heroe.id]);
       })
     }
+  }
+
+  borrar(){
+    this.heroesService.borrarHeroe(this.heroe.id!)
+      .subscribe(resp => {
+        console.log(resp);
+        this.router.navigate(['/heroes']);
+      })
   }
 }
