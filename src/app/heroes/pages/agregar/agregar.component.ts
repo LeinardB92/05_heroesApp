@@ -58,7 +58,9 @@ export class AgregarComponent implements OnInit {
 
     if(this.heroe.id){
       this.heroesService.actualizarHeroe(this.heroe)
-        .subscribe(heroe => console.log('Actualizando', heroe))
+        .subscribe(heroe => {
+          this.heroe = heroe;
+          console.log('Actualizando', heroe)})
     }else{
       this.heroesService.agregarHeroe(this.heroe)
         .subscribe(heroe => {
