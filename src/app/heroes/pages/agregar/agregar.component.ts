@@ -7,6 +7,8 @@ import { Heroe } from '../../interfaces/heroes.interface';
 import { Publisher } from '../../interfaces/heroes.interface';
 
 import { HeroesService } from '../../services/heroes.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmarComponent } from '../../components/confirmar/confirmar.component';
 
 @Component({
   selector: 'app-agregar',
@@ -19,6 +21,7 @@ import { HeroesService } from '../../services/heroes.service';
   `]
 })
 export class AgregarComponent implements OnInit {
+  
   publishers = [
     {
       id: 'DC Comics',
@@ -43,7 +46,8 @@ export class AgregarComponent implements OnInit {
   constructor(private heroesService: HeroesService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private snackBar: MatSnackBar){}
+              private snackBar: MatSnackBar,
+              private dialogo: MatDialog){}
   
   ngOnInit(): void {
     if(!this.router.url.includes('editar')){
@@ -76,11 +80,19 @@ export class AgregarComponent implements OnInit {
   }
 
   borrar(){
-    this.heroesService.borrarHeroe(this.heroe.id!)
-      .subscribe(resp => {
-        console.log(resp);
-        this.router.navigate(['/heroes']);
-      })
+      const dialog = this.dialogo.open(ConfirmarComponent, {
+      width: '350px',
+      data: this.heroe
+    });
+
+    dialog.afterClosed().subscribe(resp => {
+      if(resp){
+        this.heroesService.borrarHeroe(this.heroe.id!)
+          .subscribe(resp => {
+            this.router.navigate(['/heroes']);
+          })
+      }
+    })
   }
 
   mostrarSnackBar(mensaje: string){
