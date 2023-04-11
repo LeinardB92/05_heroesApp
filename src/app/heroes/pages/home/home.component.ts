@@ -20,7 +20,7 @@ export class HomeComponent {
   constructor(private router: Router,
               private authService: AuthService){}
 
-  get auth(): Auth{
+  get auth(){
     return this.authService.auth;
   }
 
