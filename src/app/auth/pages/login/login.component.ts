@@ -15,7 +15,7 @@ export class LoginComponent {
   login(){
     // <login()> irá al backend con ayuda del servicio auth.service.ts., así que hay que inyectarlo.
     this.authService.login().subscribe(resp => {
-      console.log(resp)
+      console.log('usuario:', resp)
 
       if(resp.id){
         // Una vez teniendo la confirmación del backend de que el usuario existe, navegar a la pantalla de listado de Héroes, para ello ocuparemos inyectar a Router.
@@ -26,8 +26,10 @@ export class LoginComponent {
     // El backend debe de confirmar que existe un usuario.
     // Ese usuario debe de almacenarse en un servicio, para que esté disponible para toda la aplicación.
     
-    
-    
+  }
 
+  loginSinId(){
+    this.authService.logout();
+    this.router.navigate(['./heroes']);
   }
 }

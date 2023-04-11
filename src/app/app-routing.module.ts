@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ErrorPageComponent } from './shared/error-page/error-page.component';
+import { NgModule, inject } from '@angular/core';
+import { Routes, RouterModule, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import { AuthGuard } from './auth/guards/auth.guard';
+import { ErrorPageComponent } from './shared/error-page/error-page.component';
+import { AuthService } from './auth/services/auth.service';
 
 const routes: Routes = [
   {
@@ -11,7 +11,14 @@ const routes: Routes = [
   },
   {
     path: 'heroes',
-    canMatch: [AuthGuard],
+    
+    canActivate: [(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>{
+      return inject(AuthService).verificaAutenticacionActivate();
+    }],
+    canMatch: [(route: Route, segments: UrlSegment[]) =>{
+      return inject(AuthService).verificaAutenticacionMatch();
+    }],
+    
     loadChildren: () => import('./heroes/heroes.module').then(m => m.HeroesModule)
   },
   {
